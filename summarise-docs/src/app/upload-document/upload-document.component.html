@@ -1,0 +1,31 @@
+<div class="chat-container">
+  <!-- Chat Window -->
+  <div class="chat-box">
+    <div *ngIf="aiResponse" class="ai-response">
+      <p>{{ aiResponse }}</p>
+    </div>
+  </div>
+
+  <!-- Input Section -->
+  <div class="chat-input">
+    <!-- Radio Buttons -->
+    <div class="radio-group">
+      <label *ngFor="let option of requestOptions">
+        <input type="radio" name="type" [value]="option.value" [(ngModel)]="requestType" /> {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Text Input -->
+    <textarea [(ngModel)]="userInput" placeholder="Enter your message" class="message-box"></textarea>
+
+    <!-- File Upload (Only for Summarization & Q&A) -->
+    <div *ngIf="requestType !== 'chat'" class="file-upload">
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
+      <label for="fileInput" class="upload-btn">📂 Choose File</label>
+      <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+    </div>
+
+    <!-- Submit Button -->
+    <button (click)="sendRequest()">🚀 Send</button>
+  </div>
+</div>
