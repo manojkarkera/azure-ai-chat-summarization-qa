@@ -2,7 +2,9 @@
   <!-- Chat Window -->
   <div class="chat-box">
     <div *ngIf="aiResponse" class="ai-response">
-      <p>{{ aiResponse }}</p>
+      <h3>Response:</h3>
+      <p *ngIf="requestType !== 'image'" [innerHTML]="formattedResponse"></p>
+      <img *ngIf="requestType === 'image'" [src]="aiResponse" alt="Generated Image" />
     </div>
   </div>
 
@@ -16,14 +18,18 @@
     </div>
 
     <!-- Text Input -->
-    <textarea [(ngModel)]="userInput" placeholder="Enter your message" class="message-box"></textarea>
+    <textarea *ngIf="requestType !== 'image'" [(ngModel)]="userInput" placeholder="Enter your message" class="message-box"></textarea>
 
     <!-- File Upload (Only for Summarization & Q&A) -->
-    <div *ngIf="requestType !== 'chat'" class="file-upload">
+    <div *ngIf="requestType === 'summarize' || requestType === 'ask'" class="file-upload">
       <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
       <label for="fileInput" class="upload-btn">📂 Choose File</label>
       <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
     </div>
+
+    <!-- Input for Image Generation -->
+   <textarea *ngIf="requestType === 'image'" [(ngModel)]="imagePrompt" placeholder="Describe the image you want" class="message-box" ></textarea>
+
 
     <!-- Submit Button -->
     <button (click)="sendRequest()">🚀 Send</button>

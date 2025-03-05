@@ -76,12 +76,12 @@
           "configurations": {
             "production": {
               "browserTarget": "summarise-docs:build:production"
-            },"development": {
-              "browserTarget": "summarise-docs:build:development",
-              "proxyConfig": "proxy.conf.json"
+            },
+            "development": {
+              "browserTarget": "summarise-docs:build:development"
             }
           },
-           "defaultConfiguration": "production"
+           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

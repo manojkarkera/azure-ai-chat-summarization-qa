@@ -17,11 +17,16 @@ export class ChatDocService {
   }
 
   // Send file-based request using FormData
-  sendFileRequest(type: 'summarize' | 'ask', file: File): Observable<any> {
+  sendFileRequest(type: 'summarize' | 'ask' | 'image', file: File): Observable<any> {
     const formData = new FormData();
     formData.append('type', type);
     formData.append('file', file);
 
     return this.http.post<any>(this.apiUrl, formData);
+  }
+
+  sendImageRequest(message: string): Observable<any> {
+    const body = { type: 'image', message };
+    return this.http.post<any>(this.apiUrl, body);
   }
 }

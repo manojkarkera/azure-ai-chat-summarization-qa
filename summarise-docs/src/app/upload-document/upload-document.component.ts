@@ -8,18 +8,21 @@ import { ChatDocService } from 'src/services/chat.service';
 })
 export class UploadDocumentComponent implements OnInit {
 
-  requestType: 'chat' | 'summarize' | 'ask' = 'chat'; // Default to Chat
+  requestType: 'chat' | 'summarize' | 'ask' | 'image' = 'chat'; // Default to Chat
   userInput: string = '';
+  imagePrompt: string = '';
   documentContent: string = '';
   aiResponse: string = '';
   selectedFile: File | null = null;
   requestOptions = [
     { label: 'Chat', value: 'chat' },
     { label: 'Summarization', value: 'summarize' },
-    { label: 'Q&A', value: 'ask' }
+    { label: 'Q&A', value: 'ask' },
+    { label: 'Image Generation', value: 'image' } // New option
   ];
+  formattedResponse: any;
 
-  constructor(private chatDocService: ChatDocService) {}
+  constructor(private chatDocService: ChatDocService) { }
 
   ngOnInit(): void {
   }
@@ -39,6 +42,7 @@ export class UploadDocumentComponent implements OnInit {
       this.chatDocService.sendTextRequest(this.requestType, this.userInput).subscribe({
         next: (response) => {
           this.aiResponse = response.response;
+          this.formattedResponse = this.nl2br(this.aiResponse);
         },
         error: (error) => {
           console.error('Error:', error);
@@ -56,7 +60,17 @@ export class UploadDocumentComponent implements OnInit {
           this.aiResponse = 'Error processing request.';
         },
       });
+    } else if (this.requestType === 'image') {
+      this.chatDocService.sendImageRequest(this.imagePrompt).subscribe({
+        next: (response) => this.aiResponse = response.imageUrl, // Store image URL
+        error: (error) => console.error('Error:', error)
+      });
     }
+
+  }
+
+  nl2br(text: string): string {
+    return text.replace(/\n/g, '<br>').replace(/\\u(\d{4})/g, (match, grp) => String.fromCharCode(parseInt(grp, 16)));
   }
 
 }
