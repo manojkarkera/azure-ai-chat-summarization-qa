@@ -11,7 +11,7 @@ export class ChatDocService {
   constructor(private http: HttpClient) {}
 
   // Send text-based request
-  sendTextRequest(type: 'chat', message: string): Observable<any> {
+  sendTextRequest(type: 'chat' | 'rag', message: string): Observable<any> {
     const body = { type, message };
     return this.http.post<any>(this.apiUrl, body);
   }

@@ -2,9 +2,14 @@
   <!-- Chat Window -->
   <div class="chat-box">
     <div *ngIf="aiResponse" class="ai-response">
-      <h3>Response:</h3>
-      <p *ngIf="requestType !== 'image'" [innerHTML]="formattedResponse"></p>
-      <img *ngIf="requestType === 'image'" [src]="aiResponse" alt="Generated Image" />
+      <div *ngIf="requestType !== 'image' && aiResponse">        
+        <p  [innerHTML]="formattedResponse"></p>
+      </div>    
+
+      <div *ngIf="requestType === 'image' && aiResponse">        
+        <img src="assets\chat_gpt_image.png" alt="Generated Image" class="generated-image" />
+      </div>
+
     </div>
   </div>
 
@@ -18,7 +23,8 @@
     </div>
 
     <!-- Text Input -->
-    <textarea *ngIf="requestType !== 'image'" [(ngModel)]="userInput" placeholder="Enter your message" class="message-box"></textarea>
+    <textarea *ngIf="requestType !== 'image'" [(ngModel)]="userInput" placeholder="Enter your message"
+      class="message-box"></textarea>
 
     <!-- File Upload (Only for Summarization & Q&A) -->
     <div *ngIf="requestType === 'summarize' || requestType === 'ask'" class="file-upload">
@@ -28,7 +34,8 @@
     </div>
 
     <!-- Input for Image Generation -->
-   <textarea *ngIf="requestType === 'image'" [(ngModel)]="imagePrompt" placeholder="Describe the image you want" class="message-box" ></textarea>
+    <textarea *ngIf="requestType === 'image'" [(ngModel)]="imagePrompt" placeholder="Describe the image you want"
+      class="message-box"></textarea>
 
 
     <!-- Submit Button -->
